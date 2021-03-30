@@ -1,0 +1,39 @@
+---
+name: "Test Platform GH Actions"
+
+on: [push]
+
+env:
+  RUN_SWAGGER_TESTS: true
+  RUN_DOTNET_UNIT_TESTS: true
+
+jobs:
+  gather_vars:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set outputs for use as conditionals
+        id: conditionals
+        run: |
+          echo "::set-output name=RUN_SWAGGER_TESTS::$(echo ${RUN_SWAGGER_TESTS})"
+          echo "::set-output name=RUN_DOTNET_UNIT_TESTS::$(echo ${RUN_DOTNET_UNIT_TESTS})"
+
+    outputs:
+      RUN_AQUA_SECURITY_TESTS: ${{ steps.conditionals.outputs.RUN_AQUA_SECURITY_TESTS }}
+      RUN_DOTNET_UNIT_TESTS: ${{ steps.conditionals.outputs.RUN_DOTNET_UNIT_TESTS }}
+
+  publish:
+    strategy:
+      matrix:
+        include:
+          - image: "oooo"
+    runs-on: ubuntu-latest
+    needs: 
+      - gather_vars
+    steps:
+
+      - name: run me oooooo
+        run: |
+          env
