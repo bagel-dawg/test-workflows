@@ -25,6 +25,8 @@ jobs:
       RUN_DOTNET_UNIT_TESTS: ${{ steps.conditionals.outputs.RUN_DOTNET_UNIT_TESTS }}
 
   publish:
+    env: 
+      my_env: ${{ fromJson(needs.gather_vars.outputs) }}
     strategy:
       matrix:
         include:
